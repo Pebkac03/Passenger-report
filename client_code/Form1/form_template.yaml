@@ -2,6 +2,8 @@ is_package: true
 container:
   type: HtmlTemplate
   properties: {html: '@theme:standard-page.html'}
+  event_bindings: {}
+  data_bindings: []
 components:
 - type: Label
   properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
@@ -11,9 +13,14 @@ components:
   name: label_1
   layout_properties: {slot: default}
 - type: TextBox
-  properties: {}
+  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+    border: '', enabled: true, foreground: '#000000', visible: true, text: '', font_size: null,
+    font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+    background: '', bold: false, underline: false}
   name: text_box_1
   layout_properties: {slot: default}
+  data_bindings:
+  - {property: foreground, code: 'self.num_entry_color['''']'}
 - type: TextArea
   properties: {role: null, align: left, height: 486, tooltip: '', placeholder: '',
     border: '', enabled: false, foreground: '', visible: true, text: '', font_size: null,
@@ -43,12 +50,13 @@ components:
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 3, width: 221.5}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
-      foreground: '', visible: true, text: '3', font_size: 50, font: '', spacing_above: small,
+      foreground: '#000000', visible: true, text: '3', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: button_3
-    layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 6, width: 221.5}
-    event_bindings: {show: button_3_show}
+    layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 6, width: 153}
+    event_bindings: {click: btn_3}
+    data_bindings: []
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: ' 4 ', font_size: 50, font: '', spacing_above: small,
