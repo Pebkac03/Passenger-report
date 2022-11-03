@@ -8,17 +8,31 @@ class Form1(Form1Template):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.num_entry = ""
 
     # Any code you write here will run before the form opens.
 
+    self.num_entry = ""
 
-  def click_3(self, **event_args):
-    self.num_entry = self.num_entry + "3"
-    if int(self.num_entry) > 51:
-      self.num_entry_color = ['#ff0000']
-    else:
-      self.num_entry_color = ['#000000']
+    self.button_1.tag = "1"
+    self.button_2.tag = "2"
+    self.button_3.tag = "3"
+    self.button_4.tag = "4"
+    self.button_5.tag = "5"
+    self.button_6.tag = "6"
+    self.button_7.tag = "7"
+    self.button_8.tag = "8"
+    self.button_9.tag = "9"
+    self.button_0.tag = "0"
+
+
+  def numBtn(self, **event_args):
+    self.num_entry = self.num_entry + event_args['sender'].tag
+    self.text_box_1.text = self.num_entry
+    print(self.num_entry)
+
+  def clearBtn(self, **event_args):
+    self.num_entry
+
 
   
     

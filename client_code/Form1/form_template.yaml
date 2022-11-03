@@ -14,13 +14,12 @@ components:
   layout_properties: {slot: default}
 - type: TextBox
   properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-    border: '', enabled: true, foreground: '#000000', visible: true, text: '', font_size: null,
+    border: '', enabled: false, foreground: '#000000', visible: true, text: '', font_size: null,
     font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
     background: '', bold: false, underline: false}
   name: text_box_1
   layout_properties: {slot: default}
-  data_bindings:
-  - {property: foreground, code: 'self.num_entry_color['''']'}
+  data_bindings: []
 - type: TextArea
   properties: {role: null, align: left, height: 486, tooltip: '', placeholder: '',
     border: '', enabled: false, foreground: '', visible: true, text: '', font_size: null,
@@ -41,6 +40,7 @@ components:
       underline: false, icon: ''}
     name: button_1
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 0, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '2', font_size: 50, font: '', spacing_above: small,
@@ -48,6 +48,7 @@ components:
       underline: false, icon: ''}
     name: button_2
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 3, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '#000000', visible: true, text: '3', font_size: 50, font: '', spacing_above: small,
@@ -55,65 +56,78 @@ components:
       underline: false, icon: ''}
     name: button_3
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 6, width: 153}
-    event_bindings: {click: btn_3}
+    event_bindings: {click: numBtn}
     data_bindings: []
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: ' 4 ', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_4
+    name: button_f1
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 9, width: 135.828}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '4', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_5
+    name: button_4
     layout_properties: {row: IOWPZG, width_xs: 3, col_xs: 0, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '5', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_6
+    name: button_5
     layout_properties: {row: IOWPZG, width_xs: 3, col_xs: 3, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '6', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_7
+    name: button_6
     layout_properties: {row: IOWPZG, width_xs: 3, col_xs: 6, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {text: button_8}
-    name: button_8
+    name: button_f2
     layout_properties: {row: IOWPZG, width_xs: 3, col_xs: 9}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '7', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_9
+    name: button_7
     layout_properties: {row: GKHKHP, width_xs: 3, col_xs: 0, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '8', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_10
+    name: button_8
     layout_properties: {row: GKHKHP, width_xs: 3, col_xs: 3, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '9', font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_11
+    name: button_9
     layout_properties: {row: GKHKHP, width_xs: 3, col_xs: 6, width: 221.5}
+    event_bindings: {click: numBtn}
   - type: Button
     properties: {text: button_12}
-    name: button_12
+    name: button_f3
     layout_properties: {row: GKHKHP, width_xs: 3, col_xs: 9}
+  - type: Button
+    properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
+      foreground: '', visible: true, text: '0', font_size: 50, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: button_0
+    layout_properties: {row: EQSVFS, width_xs: 3, col_xs: 3, width: 153}
 component:
 - type: ColumnPanel
   properties: {}
