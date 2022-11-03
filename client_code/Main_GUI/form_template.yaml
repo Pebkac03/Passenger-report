@@ -65,6 +65,7 @@ components:
       underline: false, icon: ''}
     name: button_f1
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 9, width: 135.828}
+    event_bindings: {click: clearBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: '4', font_size: 50, font: '', spacing_above: small,

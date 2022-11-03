@@ -1,7 +1,26 @@
 allow_embedding: false
 package_name: Custom_HTML_1
+db_schema:
+  table_1:
+    title: Table 1
+    client: none
+    server: full
+    columns:
+    - name: Direction
+      admin_ui: {width: 200}
+      type: string
+    - name: Passengers
+      admin_ui: {width: 200}
+      type: number
+    - name: Date
+      admin_ui: {width: 200}
+      type: date
+    - name: Time
+      admin_ui: {width: 200}
+      type: datetime
+startup: {type: form, module: Main_GUI}
 name: Custom HTML 1
-startup_form: Form1
+startup_form: null
 runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox,
   server_spec: null}
 services:

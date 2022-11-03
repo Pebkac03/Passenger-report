@@ -1,10 +1,12 @@
-from ._anvil_designer import Form1Template
+from ._anvil_designer import Main_GUITemplate
 from anvil import *
+import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+import datetime as dt
 
-class Form1(Form1Template):
+class Main_GUI(Main_GUITemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -23,7 +25,7 @@ class Form1(Form1Template):
     self.button_8.tag = "8"
     self.button_9.tag = "9"
     self.button_0.tag = "0"
-    self.label_1.text = "Passagerare"
+    self.label_1.text = "Passagerare " + dt.datetime.now().strftime("%d/%m")
 
 
 
@@ -32,9 +34,12 @@ class Form1(Form1Template):
     self.num_entry = self.num_entry + event_args['sender'].tag
     self.text_box_1.text = self.num_entry
     print(self.num_entry)
+    #print(dt.datetime.now())
+    self.time = dt.datetime.now()
 
   def clearBtn(self, **event_args):
-    self.num_entry
+    self.num_entry = ""
+    self.text_box_1.text = self.num_entry
 
 
   

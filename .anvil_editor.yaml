@@ -1,8 +1,10 @@
 unique_ids:
   forms:
-    Form1: '1667429644533972819269331.6487'
+    Main_GUI: '1667429644533972819269331.6487'
+    Report: '1667518026181239933389336.215'
   modules: {}
-  server_modules: {}
+  server_modules:
+    ServerModule1: '1667515866666112526854260.34814'
   assets:
     standard-page.html: B2H4FCMMNR4Q4ZCD66E4EROKF3TYQTVI
     theme.css: YPY7RDZM3OM77PIAJQUPQLDXC7FB7CDN
