@@ -23,6 +23,9 @@ class Form1(Form1Template):
     self.button_8.tag = "8"
     self.button_9.tag = "9"
     self.button_0.tag = "0"
+    self.label_1.text = "Passagerare"
+
+
 
 
   def numBtn(self, **event_args):
