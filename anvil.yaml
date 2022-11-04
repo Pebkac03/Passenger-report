@@ -1,5 +1,15 @@
-allow_embedding: false
+scheduled_tasks: []
+services:
+- source: /runtime/services/tables.yml
+  client_config: {}
+  server_config: {}
+startup: {type: form, module: Main_GUI_Touchscreen}
 package_name: Custom_HTML_1
+allow_embedding: false
+name: Custom HTML 1
+runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox,
+  server_spec: null}
+startup_form: null
 db_schema:
   table_1:
     title: Table 1
@@ -18,12 +28,3 @@ db_schema:
     - name: Time
       admin_ui: {width: 200}
       type: datetime
-startup: {type: form, module: Main_GUI}
-name: Custom HTML 1
-startup_form: null
-runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox,
-  server_spec: null}
-services:
-- source: /runtime/services/tables.yml
-  client_config: {}
-  server_config: {}

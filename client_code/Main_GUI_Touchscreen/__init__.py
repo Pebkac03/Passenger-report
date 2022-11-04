@@ -1,4 +1,4 @@
-from ._anvil_designer import Main_GUITemplate
+from ._anvil_designer import Main_GUI_TouchscreenTemplate
 from anvil import *
 import anvil.server
 import anvil.tables as tables
@@ -6,7 +6,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import datetime as dt
 
-class Main_GUI(Main_GUITemplate):
+class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -29,13 +29,13 @@ class Main_GUI(Main_GUITemplate):
 
 
 
-
   def numBtn(self, **event_args):
     self.num_entry = self.num_entry + event_args['sender'].tag
     self.text_box_1.text = self.num_entry
     print(self.num_entry)
     #print(dt.datetime.now())
     self.time = dt.datetime.now()
+    print(event_args)
 
   def clearBtn(self, **event_args):
     self.num_entry = ""
