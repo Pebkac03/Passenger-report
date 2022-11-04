@@ -63,7 +63,7 @@ components:
       foreground: '', visible: true, text: T-J, font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_f1
+    name: button_direction_1
     layout_properties: {row: FSZCZP, width_xs: 3, col_xs: 9, width: 153}
     event_bindings: {click: clearBtn}
   - type: Button
@@ -95,7 +95,7 @@ components:
       foreground: '', visible: true, text: J-T, font_size: 50, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: button_f2
+    name: button_direction_2
     layout_properties: {row: IOWPZG, width_xs: 3, col_xs: 9, width: 153}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
