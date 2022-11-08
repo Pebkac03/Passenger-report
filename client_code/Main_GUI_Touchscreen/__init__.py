@@ -14,7 +14,20 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     # Any code you write here will run before the form opens.
 
     self.num_entry = ""
+    self.trips_td = [
+      {
+        'Time': r['Time'].strftime("%H:%M"),
+        'Direction': r['Direction'],
+        'Passengers': str(r['Passengers'])
+      }
+      for r in app_tables.table_1.search(Date=dt.date.today())
+    ]
+    self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
+    ##self.trips_td_str = "\n".join([" ".join(d.values()) for d in self.trips_td])
+    self.trips_td_str = "\n".join(self.trips_td_list)
 
+
+    ##Tags
     self.button_1.tag = "1"
     self.button_2.tag = "2"
     self.button_3.tag = "3"
@@ -25,7 +38,12 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.button_8.tag = "8"
     self.button_9.tag = "9"
     self.button_0.tag = "0"
+    self.button_enter_1.tag = "Tjärö - Järnavik"
+    self.button_enter_2.tag = "Järnavik - Tjärö"
+
     self.label_1.text = "Passagerare " + dt.datetime.now().strftime("%d/%m")
+    self.text_area_1.text = self.trips_td_str
+    print(self.trips_td)
 
 
 
@@ -41,16 +59,11 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.num_entry = ""
     self.text_box_1.text = self.num_entry
 
-
-  
+  def enterBtn(self, **event_args):
+    now = dt.datetime.now()
+    app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
+    self.trips_td_list.append(now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
+    self.trips_td_str = "\n".join(self.trips_td_list)
+    self.text_area_1.text = self.trips_td_str
     
-
-
-
-
-
-
-
-
-
-
+    self.clearBtn()
