@@ -61,7 +61,9 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
 
   def enterBtn(self, **event_args):
     now = dt.datetime.now()
-    app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
+    to_save = {"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}
+    anvil.server.call_s('save', to_save)
+    ##app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
     self.trips_td_list.append(now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
     self.trips_td_str = "\n".join(self.trips_td_list)
     self.text_area_1.text = self.trips_td_str
