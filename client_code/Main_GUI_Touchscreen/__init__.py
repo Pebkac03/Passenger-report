@@ -63,17 +63,17 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
   def enterBtn(self, **event_args):
     now = dt.datetime.now()
     if local_storage.is_available():
-      to_save = local_storage['entries']
+      to_save = local_storage['unsaved']
       to_save['Data'].append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()})
-      local_storage['entries'] = to_save
+      local_storage['unsaved'] = to_save
     else:
-      to_save = {"When": dt.datetime.now(), "Data": [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}]}
-      local_storage['entries'] = to_save
+      to_save = {"Data": [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}]}
+      local_storage['unsaved'] = to_save
     try:
       anvil.server.call_s('save', to_save)
     except anvil.server.AppOfflineError:
       print("Server is offline")
-      local_storage['entries'] = to_save
+      local_storage['unsaved'] = to_save
 
       
     
@@ -83,7 +83,3 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.text_area_1.text = self.trips_td_str
     
     self.clearBtn()
-  def saveCache(self, cache):
-    for n in cache:
-      try:
-        anvil.server.call_s('save', cache['n'])

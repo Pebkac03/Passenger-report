@@ -5,7 +5,12 @@ import anvil.server
 import datetime as dt
 
 def save(to_save):
-  row = app_tables.table_1.add_row()
+  for n in to_save['Data']:
+    row = app_tables.table_1.add_row()
+    row['Time'] = n['Time']
+    row['Direction'] = n['Direction']
+    row['Passengers'] = n['Passengers']
+    row['Date'] = n['Passengers']
   
 
 # This is a server module. It runs on the Anvil server,
