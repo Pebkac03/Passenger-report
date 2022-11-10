@@ -13,6 +13,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    if 'unsaved' in local_storage:
+      print(local_storage['unsaved'])
 
     self.num_entry = ""
     self.trips_td = [
@@ -44,7 +46,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
 
     self.label_1.text = "Passagerare " + dt.datetime.now().strftime("%d/%m")
     self.text_area_1.text = self.trips_td_str
-    print(self.trips_td)
+
+    self.sim_offline = False
 
 
 
@@ -64,16 +67,23 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     now = dt.datetime.now()
     if 'unsaved' in local_storage:
       to_save = local_storage['unsaved']
-      to_save.append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()})
+
+      #Line 72 adds to_save['time'] as a simple object instead of a datetime object
+      to_save.append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": dt.date.today()})
+    else:
+      to_save = [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": dt.date.today()}]
+
+    if self.sim_offline:
+      print("server is offline")
       local_storage['unsaved'] = to_save
     else:
-      to_save = [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}]
-      local_storage['unsaved'] = to_save
-    try:
-      anvil.server.call_s('save', to_save)
-    except anvil.server.AppOfflineError:
-      print("Server is offline")
-      local_storage['unsaved'] = to_save
+      try:
+        anvil.server.call_s('save', to_save)
+        del local_storage['unsaved']
+      except anvil.server.AppOfflineError:
+        print("Server is offline")
+        local_storage['unsaved'] = to_save
+    
 
       
     
@@ -83,3 +93,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.text_area_1.text = self.trips_td_str
     
     self.clearBtn()
+
+  def delBtn(self, **event_args):
+    local_storage.clear()
+
+

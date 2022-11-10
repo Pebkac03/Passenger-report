@@ -4,13 +4,15 @@ from anvil.tables import app_tables
 import anvil.server
 import datetime as dt
 
+@anvil.server.callable
 def save(to_save):
-  for n in to_save['Data']:
+  for n in to_save:
+    print(type(n['Time']))
     row = app_tables.table_1.add_row()
     row['Time'] = n['Time']
     row['Direction'] = n['Direction']
     row['Passengers'] = n['Passengers']
-    row['Date'] = n['Passengers']
+    row['Date'] = n['Date']
   
 
 # This is a server module. It runs on the Anvil server,
