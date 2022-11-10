@@ -62,12 +62,12 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
 
   def enterBtn(self, **event_args):
     now = dt.datetime.now()
-    if local_storage.is_available():
+    if 'unsaved' in local_storage:
       to_save = local_storage['unsaved']
-      to_save['Data'].append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()})
+      to_save.append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()})
       local_storage['unsaved'] = to_save
     else:
-      to_save = {"Data": [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}]}
+      to_save = [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}]
       local_storage['unsaved'] = to_save
     try:
       anvil.server.call_s('save', to_save)
