@@ -5,6 +5,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import datetime as dt
+from anvil_extras.storage import local_storage
 
 class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
   def __init__(self, **properties):
@@ -61,11 +62,28 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
 
   def enterBtn(self, **event_args):
     now = dt.datetime.now()
-    to_save = {"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}
-    anvil.server.call_s('save', to_save)
+    if local_storage.is_available():
+      to_save = local_storage['entries']
+      to_save['Data'].append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()})
+      local_storage['entries'] = to_save
+    else:
+      to_save = {"When": dt.datetime.now(), "Data": [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": date.today()}]}
+      local_storage['entries'] = to_save
+    try:
+      anvil.server.call_s('save', to_save)
+    except anvil.server.AppOfflineError:
+      print("Server is offline")
+      local_storage['entries'] = to_save
+
+      
+    
     ##app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
     self.trips_td_list.append(now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
     self.trips_td_str = "\n".join(self.trips_td_list)
     self.text_area_1.text = self.trips_td_str
     
     self.clearBtn()
+  def saveCache(self, cache):
+    for n in cache:
+      try:
+        anvil.server.call_s('save', cache['n'])
