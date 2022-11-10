@@ -69,9 +69,9 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       to_save = local_storage['unsaved']
 
       #Line 72 adds to_save['time'] as a simple object instead of a datetime object
-      to_save.append({"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": dt.date.today()})
+      to_save.append({"Time": now.isoformat(), "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": dt.date.today()})
     else:
-      to_save = [{"Time": now, "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": dt.date.today()}]
+      to_save = [{"Time": now.isoformat(), "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry), "Date": dt.date.today()}]
 
     if self.sim_offline:
       print("server is offline")

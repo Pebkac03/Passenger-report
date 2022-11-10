@@ -9,7 +9,7 @@ def save(to_save):
   for n in to_save:
     print(type(n['Time']))
     row = app_tables.table_1.add_row()
-    row['Time'] = n['Time']
+    row['Time'] = dt.datetime.fromisoformat(n['Time'])
     row['Direction'] = n['Direction']
     row['Passengers'] = n['Passengers']
     row['Date'] = n['Date']
