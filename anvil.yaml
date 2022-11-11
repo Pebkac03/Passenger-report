@@ -32,3 +32,4 @@ db_schema:
     - name: Date
       admin_ui: {width: 200}
       type: date
+renamed: true
