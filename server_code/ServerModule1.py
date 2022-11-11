@@ -12,7 +12,7 @@ def save(to_save):
     row['Time'] = dt.datetime.fromisoformat(n['Time'])
     row['Direction'] = n['Direction']
     row['Passengers'] = n['Passengers']
-    row['Date'] = n['Date']
+    row['Date'] = dt.date.fromisoformat(n['Date'])
   
 
 # This is a server module. It runs on the Anvil server,
