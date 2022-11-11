@@ -26,8 +26,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       for r in app_tables.table_1.search(Date=dt.date.today())
     ]
     self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-    ##self.trips_td_str = "\n".join([" ".join(d.values()) for d in self.trips_td])
-    self.trips_td_str = "\n".join(self.trips_td_list)
+    self.trips_td_list_reverse = self.trips_td_list.reverse()
+    self.trips_td_str = "\n".join(self.trips_td_list_reverse)
 
 
     ##Tags
@@ -88,7 +88,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       
     
     ##app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
-    self.trips_td_list.append(now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
+    self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
     self.trips_td_str = "\n".join(self.trips_td_list)
     self.text_area_1.text = self.trips_td_str
     
@@ -96,7 +96,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
 
   def delBtn(self, **event_args):
     if 'unsaved' in local_storage:
-      
+      local_storage['unsaved'].pop()
+      self.trips_td_list.pop()
 
   def simOffline_true(self, **event_args):
     self.sim_offline = True
