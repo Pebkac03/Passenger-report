@@ -97,4 +97,13 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
   def delBtn(self, **event_args):
     local_storage.clear()
 
+  def simOffline_true(self, **event_args):
+    self.sim_offline = True
+
+
+  def simOffline_false(self, **event_args):
+    self.sim_offline = False
+
+
+
 
