@@ -95,7 +95,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.clearBtn()
 
   def delBtn(self, **event_args):
-    local_storage.clear()
+    if 'unsaved' in local_storage:
+      
 
   def simOffline_true(self, **event_args):
     self.sim_offline = True
