@@ -1,7 +1,5 @@
 scheduled_tasks: []
 dependencies:
-- app_id: C6ZZPAPN4YYF5NVJ
-  version: {dev: false}
 - app_id: T6Z57LSKVADN3MV6
   version: {dev: false}
 services:
