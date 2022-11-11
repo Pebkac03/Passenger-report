@@ -26,8 +26,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       for r in app_tables.table_1.search(Date=dt.date.today())
     ]
     self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-    self.trips_td_list_reverse = self.trips_td_list.reverse()
-    self.trips_td_str = "\n".join(self.trips_td_list_reverse)
+    self.trips_td_list.reverse()
+    self.trips_td_str = "\n".join(self.trips_td_list)
 
 
     ##Tags
