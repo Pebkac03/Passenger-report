@@ -12,7 +12,7 @@ allow_embedding: false
 name: Passenger report
 runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox,
   server_spec: null}
-metadata: {logo_img: 'asset:icons8-water-transportation-96.png'}
+metadata: {logo_img: 'asset:ship_512.png'}
 startup_form: null
 db_schema:
   table_1:
