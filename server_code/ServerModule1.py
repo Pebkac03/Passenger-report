@@ -15,7 +15,7 @@ def save(to_save):
     row['Date'] = dt.date.fromisoformat(n['Date'])
 
 @anvil.server.callable
-def delete(delete_count):
+def delete():
   table = app_tables.table_1.search(tables.order_by("Time", ascending=False))
   del table[0]
   
