@@ -13,6 +13,10 @@ def save(to_save):
     row['Direction'] = n['Direction']
     row['Passengers'] = n['Passengers']
     row['Date'] = dt.date.fromisoformat(n['Date'])
+
+def delete(delete_count):
+  for x in range(delete_count):
+    app_tables.table_1.delete()
   
 
 # This is a server module. It runs on the Anvil server,

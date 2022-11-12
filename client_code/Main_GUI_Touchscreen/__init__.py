@@ -108,6 +108,9 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     if 'unsaved' in local_storage:
       local_storage['unsaved'].pop()
       self.trips_td_list.pop()
+    else:
+      try:
+        anvil.server.call_s()
 
   def simOffline_true(self, **event_args):
     self.sim_offline = True
