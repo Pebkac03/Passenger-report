@@ -91,7 +91,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
     
     ##UNTESTED
-    for n, value in enumerate(self.trips_td_list):
+    for n, value in enumerate(self.trips_td_list[:-1]):
       ##loop through to see if entries for two days are in list, checks if a more recent hour value is lesser than the previous one
       if int(self.trips_td_list[n][0:2]) < int(self.trips_td_list[n + 1][0:2]):
         ##for loop to remove everything after self.trips_td_list[n]
