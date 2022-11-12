@@ -129,6 +129,7 @@ components:
       bold: false, underline: false, icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAAAXNSR0IArs4c6QAAAhxJREFUeF7tmsFqwzAQBZWv7rE99rOLC4E0dZyVtatRmzHkZvZJM3oGE1+aF0rggqYb3hQAHwIFKAAmAMfbAAXABOB4G6AAmAAcbwMUABOA422AAmACcLwNUABMAI63AQqACcDxNkABMAE43gYoACYAx9sABcAE4HgboACYABxvAxQAE4DjbYACYAJwvA1QAEwAjrcB/0zAR2tt+3kFCWQ2YAP/3pqfvAfZf9+WJeAKP3Nmzz7+7L0ZAm7hK6DzKIwKuIevgIkC9uArYJKAR/AVMEHAEXwFFAt4Bl8BhQIi8BVQJCAKXwEFAnrgKyBZQC/8zviXvP3Hu9fRi5jwa85HSIDwa+D/ekTvNUD4dfBDAt5aa5+1a3jp6aFHkBLqzkhIwBavhBoJYQFKWEDAGQmj/zHUbHvRqVFYPY+j6MxFkcxdVg+sqISemXN3u2BaL6yIhN6ZC2KZt6QzsJ5JODNz3o4XSzoL60jC2ZmLoZmznBFYjySMzJyz64VSRmHtSRiduRCe+qVkwLqXkDGzfueLJGTBupWQNXMRRLXLyIR1lZA5s3b3C0zPhuXn6Z1SswV0xnu7AuAzoAAFwATgeBugAJgAHG8DFAATgONtgAJgAnC8DVAATACOtwEKgAnA8TZAATABON4GKAAmAMfbAAXABOB4G6AAmAAcbwMUABOA422AAmACcLwNUABMAI63AQqACcDxNkABMAE4/gv1sSBhVG1O4gAAAABJRU5ErkJggg=='}
     name: button_f3
     layout_properties: {row: GKHKHP, width_xs: 3, col_xs: 9, width: 217.25}
+    event_bindings: {click: clearBtn}
   - type: Button
     properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: T-J, font_size: 50, font: '', spacing_above: small,
