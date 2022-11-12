@@ -16,8 +16,8 @@ def save(to_save):
 
 @anvil.server.callable
 def delete(delete_count):
-  first = app_tables.table_1.search()[1]
-  print(first)
+  first = app_tables.table_1.search())[1]
+  print(str(first))
   #for x in range(delete_count):
     #app_tables.table_1.delete()
   
