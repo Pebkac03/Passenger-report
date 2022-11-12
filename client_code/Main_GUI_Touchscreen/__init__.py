@@ -23,7 +23,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       pass
     else:
       self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-      self.trips_td_list.reverse()
+
       self.trips_td_str = "\n".join(self.trips_td_list)
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
@@ -45,13 +45,11 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
             'Direction': r['Direction'],
             'Passengers': str(r['Passengers'])
           }
-          for r in app_tables.table_1.search(tables.order_by("Time", ascending=False), Date=dt.date.today())
+          for r in local_storage['unsaved']
         ]
         self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
         self.trips_td_list.reverse()
         self.trips_td_str = "\n".join(self.trips_td_list)
-      else:
-        self.first_onlinecall_made = True
     else:
       try:
         self.onlineUpdate()
@@ -125,7 +123,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       finally:
         for n, value in enumerate(self.trips_td_list[:-1]):
           ##loop through to see if entries for two days are in list, checks if a more recent hour value is lesser than the previous one
-          if int(self.trips_td_list[n][0:2]) > int(self.trips_td_list[n + 1][0:2]):
+          if int(self.trips_td_list[n][0:2]) < int(self.trips_td_list[n + 1][0:2]):
             ##for loop to remove everything after self.trips_td_list[n]
             del self.trips_td_list[n + 1:]
             break
