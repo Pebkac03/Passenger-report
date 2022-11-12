@@ -110,7 +110,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       self.trips_td_list.pop()
     else:
       try:
-        anvil.server.call_s('delete')
+        anvil.server.call_s('delete', 1)
       except anvil.server.AppOfflineError:
         pass
 
