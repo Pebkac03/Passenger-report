@@ -54,7 +54,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         self.first_onlinecall_made = True
     else:
       try:
-        self.onlineupdate()
+        self.onlineUpdate()
       except anvil.server.AppOfflineError:
         self.trips_td_str = ""
       else:
