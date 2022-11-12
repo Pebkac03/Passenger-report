@@ -79,29 +79,21 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     else:
       try:
         anvil.server.call_s('save', to_save)
-        del local_storage['unsaved']
       except anvil.server.AppOfflineError:
         print("Server is offline")
         local_storage['unsaved'] = to_save
-    
+      else:
+        del local_storage['unsaved']
 
-      
-    
-    ##app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
     self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
-    
-    ##UNTESTED
     for n, value in enumerate(self.trips_td_list[:-1]):
       ##loop through to see if entries for two days are in list, checks if a more recent hour value is lesser than the previous one
       if int(self.trips_td_list[n][0:2]) < int(self.trips_td_list[n + 1][0:2]):
         ##for loop to remove everything after self.trips_td_list[n]
         del self.trips_td_list[n + 1:]
         break
-    ##/UNTESTED
-        
     self.trips_td_str = "\n".join(self.trips_td_list)
     self.text_area_1.text = self.trips_td_str
-    
     self.clearBtn()
 
   def delBtn(self, **event_args):
@@ -110,9 +102,11 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       self.trips_td_list.pop()
     else:
       try:
-        anvil.server.call_s('delete', 1)
+        anvil.server.call_s('delete', local_storage['delete_count'])
       except anvil.server.AppOfflineError:
-        pass
+        local_storage['delete_count'] += 1
+      else:
+        local_storage['delete_count'] = 0
 
   def simOffline_true(self, **event_args):
     self.sim_offline = True
