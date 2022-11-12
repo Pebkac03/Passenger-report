@@ -116,6 +116,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         print("Server is offline")
         local_storage['unsaved'] = to_save
         self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
+        self.trips_td_str = "\n".join(self.trips_td_list)
+        self.text_area_1.text = self.trips_td_str
       else:
         del local_storage['unsaved']
         self.first_onlinecall_made = True
