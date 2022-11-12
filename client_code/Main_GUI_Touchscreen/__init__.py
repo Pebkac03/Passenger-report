@@ -10,18 +10,23 @@ import time
 
 class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
   def onlineUpdate(self, **event_args):
+
     try:
-      self.trips_td = [
+      self.trips_td_full = [
         {
           'Time': r['Time'].strftime("%H:%M"),
           'Direction': r['Direction'],
-          'Passengers': str(r['Passengers'])
+          'Passengers': str(r['Passengers']),
+          'Date': r['Date']
         }
         for r in app_tables.table_1.search(tables.order_by("Time", ascending=False), Date=dt.date.today())
       ]
     except anvil.server.AppOfflineError:
       pass
     else:
+      self.trips_td = self.trips_td_full
+      for n in self.trips_td:
+        n.pop()
       self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
       self.trips_td_str = "\n".join(self.trips_td_list)
       self.text_area_1.text = self.trips_td_str
