@@ -89,8 +89,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     
     ##app_tables.table_1.add_row(Time=now, Direction=event_args['sender'].tag, Passengers=int(self.num_entry), Date=dt.date.today())
     self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
-    self.trips_td_str = "\n".join(self.trips_td_list)
-    self.text_area_1.text = self.trips_td_str
+    
     ##UNTESTED
     for n, value in enumerate(self.trips_td_list):
       ##loop through to see if entries for two days are in list, checks if a more recent hour value is lesser than the previous one
@@ -99,6 +98,9 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         del self.trips_td_list[n + 1:]
         break
     ##/UNTESTED
+        
+    self.trips_td_str = "\n".join(self.trips_td_list)
+    self.text_area_1.text = self.trips_td_str
     
     self.clearBtn()
 
