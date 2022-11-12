@@ -99,8 +99,6 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.text_box_1.text = self.num_entry
 
   def enterBtn(self, **event_args):
-    if local_storage['delete_count'] > 0:
-      anvil.server.call_s('delete', local_storage['delete_count'])
     now = dt.datetime.now()
     if 'unsaved' in local_storage:
       to_save = local_storage['unsaved']
