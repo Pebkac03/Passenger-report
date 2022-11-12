@@ -6,20 +6,25 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import datetime as dt
 from anvil_extras.storage import local_storage
+import time
 
 class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
   def onlineUpdate(self, **event_args):
-    self.trips_td = [
-      {
-        'Time': r['Time'].strftime("%H:%M"),
-        'Direction': r['Direction'],
-        'Passengers': str(r['Passengers'])
-      }
-      for r in app_tables.table_1.search(tables.order_by("Time", ascending=False), Date=dt.date.today())
-    ]
-    self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-    self.trips_td_list.reverse()
-    self.trips_td_str = "\n".join(self.trips_td_list)
+    try:
+      self.trips_td = [
+        {
+          'Time': r['Time'].strftime("%H:%M"),
+          'Direction': r['Direction'],
+          'Passengers': str(r['Passengers'])
+        }
+        for r in app_tables.table_1.search(tables.order_by("Time", ascending=False), Date=dt.date.today())
+      ]
+    except anvil.server.AppOfflineError:
+      pass
+    else:
+      self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
+      self.trips_td_list.reverse()
+      self.trips_td_str = "\n".join(self.trips_td_list)
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -114,40 +119,52 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       except anvil.server.AppOfflineError:
         print("Server is offline")
         local_storage['unsaved'] = to_save
+        self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
       else:
         del local_storage['unsaved']
         self.first_onlinecall_made = True
+        self.onlineUpdate()
+      finally
+        for n, value in enumerate(self.trips_td_list[:-1]):
+          ##loop through to see if entries for two days are in list, checks if a more recent hour value is lesser than the previous one
+          if int(self.trips_td_list[n][0:2]) < int(self.trips_td_list[n + 1][0:2]):
+            ##for loop to remove everything after self.trips_td_list[n]
+            del self.trips_td_list[n + 1:]
+            break
+        self.trips_td_str = "\n".join(self.trips_td_list)
+        self.text_area_1.text = self.trips_td_str
+        self.clearBtn()
 
-    self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
-    for n, value in enumerate(self.trips_td_list[:-1]):
-      ##loop through to see if entries for two days are in list, checks if a more recent hour value is lesser than the previous one
-      if int(self.trips_td_list[n][0:2]) < int(self.trips_td_list[n + 1][0:2]):
-        ##for loop to remove everything after self.trips_td_list[n]
-        del self.trips_td_list[n + 1:]
-        break
-    self.trips_td_str = "\n".join(self.trips_td_list)
-    self.text_area_1.text = self.trips_td_str
-    self.clearBtn()
+
+
+
 
   def delBtn(self, **event_args):
-    if not self.first_onlinecall_made:
-      try:
-        self.onlineUpdate()
-      except anvil.server.AppOfflineError:
-        pass
-      else:
-        self.first_onlinecall_made = True
     if 'unsaved' in local_storage:
       local_storage['unsaved'].pop()
       self.trips_td_list.pop()
-    elif self.first_onlinecall_made:
-      try:
-        anvil.server.call_s('delete', local_storage['delete_count'])
-      except anvil.server.AppOfflineError:
-        pass
+    else:
+      trips_td = self.trips_td
+      self.onlineUpdate()
+      if self.trips_td == trips_td:
+        try:
+          anvil.server.call_s('delete')
+        except anvil.server.AppOfflineError:
+          self.text_box_1.text("Failed, couldn't fetch most recent data")
+          time.sleep(3)
+          self.text_box_1.text("")
+        else:
+          self.onlineUpdate()
       else:
-        local_storage['delete_count'] = 0
-        self.first_onlinecall_made = True
+        if anvil.server.is_app_online():
+          self.text_box_1.text("Cancelled, list not up to date")
+          time.sleep(3)
+          self.text_box_1.text("")
+        else:
+          self.text_box_1.text("Failed, couldn't fetch most recent data")
+          time.sleep(3)
+          self.text_box_1.text("")
+
 
   def simOffline_true(self, **event_args):
     self.sim_offline = True
