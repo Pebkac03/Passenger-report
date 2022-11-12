@@ -14,6 +14,7 @@ def save(to_save):
     row['Passengers'] = n['Passengers']
     row['Date'] = dt.date.fromisoformat(n['Date'])
 
+@anvil.server.callable
 def delete(delete_count):
   first = app_tables.table_1.get()[1]
   print(first)
