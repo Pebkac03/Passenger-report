@@ -8,6 +8,18 @@ import datetime as dt
 from anvil_extras.storage import local_storage
 
 class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
+  def onlineUpdate(self, **event_args):
+    self.trips_td = [
+      {
+        'Time': r['Time'].strftime("%H:%M"),
+        'Direction': r['Direction'],
+        'Passengers': str(r['Passengers'])
+      }
+      for r in app_tables.table_1.search(tables.order_by("Time", ascending=False), Date=dt.date.today())
+    ]
+    self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
+    self.trips_td_list.reverse()
+    self.trips_td_str = "\n".join(self.trips_td_list)
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -16,18 +28,36 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     if 'unsaved' in local_storage:
       print(local_storage['unsaved'])
 
+    self.first_onlinecall_made = False
     self.num_entry = ""
-    self.trips_td = [
-      {
-        'Time': r['Time'].strftime("%H:%M"),
-        'Direction': r['Direction'],
-        'Passengers': str(r['Passengers'])
-      }
-      for r in app_tables.table_1.search(Date=dt.date.today())
-    ]
-    self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-    self.trips_td_list.reverse()
-    self.trips_td_str = "\n".join(self.trips_td_list)
+    if 'unsaved' in local_storage:
+      try:
+        anvil.server.call_s('save', local_storage['unsaved'])
+      except anvil.server.AppOfflineError:
+        self.trips_td = [
+          {
+            'Time': r['Time'].fromisoformat().strftime("%H:%M"),
+            'Direction': r['Direction'],
+            'Passengers': str(r['Passengers'])
+          }
+          for r in app_tables.table_1.search(tables.order_by("Time", ascending=False), Date=dt.date.today())
+        ]
+        self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
+        self.trips_td_list.reverse()
+        self.trips_td_str = "\n".join(self.trips_td_list)
+      else:
+        self.first_onlinecall_made = True
+    else:
+      try:
+        self.onlineupdate()
+      except anvil.server.AppOfflineError:
+        self.trips_td_str = ""
+      else:
+        self.first_onlinecall_made = True
+
+
+
+
 
 
     ##Tags
@@ -64,6 +94,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.text_box_1.text = self.num_entry
 
   def enterBtn(self, **event_args):
+    if local_storage['delete_count'] > 0:
+      anvil.server.call_s('delete', local_storage['delete_count'])
     now = dt.datetime.now()
     if 'unsaved' in local_storage:
       to_save = local_storage['unsaved']
@@ -84,6 +116,7 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         local_storage['unsaved'] = to_save
       else:
         del local_storage['unsaved']
+        self.first_onlinecall_made = True
 
     self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
     for n, value in enumerate(self.trips_td_list[:-1]):
@@ -97,16 +130,24 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
     self.clearBtn()
 
   def delBtn(self, **event_args):
+    if not self.first_onlinecall_made:
+      try:
+        self.onlineUpdate()
+      except anvil.server.AppOfflineError:
+        pass
+      else:
+        self.first_onlinecall_made = True
     if 'unsaved' in local_storage:
       local_storage['unsaved'].pop()
       self.trips_td_list.pop()
-    else:
+    elif self.first_onlinecall_made:
       try:
         anvil.server.call_s('delete', local_storage['delete_count'])
       except anvil.server.AppOfflineError:
-        local_storage['delete_count'] += 1
+        pass
       else:
         local_storage['delete_count'] = 0
+        self.first_onlinecall_made = True
 
   def simOffline_true(self, **event_args):
     self.sim_offline = True
