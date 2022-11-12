@@ -17,7 +17,7 @@ def save(to_save):
 @anvil.server.callable
 def delete():
   table = app_tables.table_1.search(tables.order_by("Time", ascending=False))
-  del table[-1]
+  table[0].delete()
   
 
 # This is a server module. It runs on the Anvil server,
