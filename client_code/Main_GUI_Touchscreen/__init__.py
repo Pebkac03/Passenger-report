@@ -23,8 +23,8 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
       pass
     else:
       self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-
       self.trips_td_str = "\n".join(self.trips_td_list)
+      self.text_area_1.text = self.trips_td_str
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
