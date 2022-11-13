@@ -33,19 +33,21 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
                     'Passengers': str(r['Passengers']),
                     'Date': r['Date'].isoformat()
                 }
-                for r in app_tables.table_1.search(tables.order_by("Time".fromisoformat(), ascending=False),
-                                                   Date=dt.date.today().isoformat())
+                for r in app_tables.table_1.search(tables.order_by("Time", ascending=False),
+                                                   Date=dt.date.today())
             ]
         except anvil.server.AppOfflineError:
             self.trips_td_full = local_storage['trips']
         else:
             local_storage['trips'] = self.trips_td_full
         finally:
-            for n in enumerate(self.trips_td_full):
-                self.trips_td[n]['Time'] = self.trips_td_full[n]['Time'].fromisoformat().strftime("%H:%M")
-                self.trips_td[n]['Direction'] = self.trips_td_full[n]['Direction']
-                self.trips_td[n]['Passengers'] = str(self.trips_td_full[n]['Passengers'])
-
+            self.trips_td = []
+            print(self.trips_td_full)
+            for n, value in enumerate(self.trips_td_full):
+                self.trips_td.append({"Time": dt.datetime.fromisoformat(value['Time']).strftime("%H:%M"),
+                                      "Direction": value['Direction'], "Passengers": value['Passengers']})
+            print(type(self.trips_td))
+            print(self.trips_td)
             self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
             self.trips_td_str = "\n".join(self.trips_td_list)
             self.text_area_1.text = self.trips_td_str
