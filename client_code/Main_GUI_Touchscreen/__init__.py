@@ -24,7 +24,6 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
             local_storage['unsaved'] = to_add
 
     def update(self, **event_args):
-
         try:
             self.trips_td_full = [
                 {
@@ -60,7 +59,6 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         if 'unsaved' in local_storage:
             print(local_storage['unsaved'])
 
-        self.num_entry = ""
         if 'unsaved' in local_storage:
             try:
                 anvil.server.call_s('save', local_storage['unsaved'])
@@ -104,37 +102,36 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         self.sim_offline = False
 
     def numBtn(self, **event_args):
-        self.num_entry = self.num_entry + event_args['sender'].tag
-        self.text_box_1.text = self.num_entry
-        print(self.num_entry)
-        # print(dt.datetime.now())
-        self.time = dt.datetime.now()
-        print(event_args)
+        self.text_box_1.text += event_args['sender'].tag
 
     def clearBtn(self, **event_args):
-        self.num_entry = ""
-        self.text_box_1.text = self.num_entry
+        self.text_box_1.text = ""
 
     def enterBtn(self, **event_args):
-        now = dt.datetime.now()
-        to_save = [
-            {"Time": now.isoformat(), "Direction": event_args['sender'].tag, "Passengers": int(self.num_entry),
-             "Date": dt.date.today().isoformat()}]
-        try:
-            anvil.server.call_s('save', to_save)
-        except anvil.server.AppOfflineError:
-            self.offlineSave(to_save)
-            """
-            self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
-            self.trips_td_str = "\n".join(self.trips_td_list)
-            self.text_area_1.text = self.trips_td_str
-            """
-        else:
-            del local_storage['unsaved']
-        finally:
-            self.update()
+        if self.text_box_1 is not "":
+            now = dt.datetime.now()
+            to_save = [
+                {"Time": now.isoformat(), "Direction": event_args['sender'].tag,
+                 "Passengers": int(self.text_box_1.text),
+                 "Date": dt.date.today().isoformat()}]
+            try:
+                anvil.server.call_s('save', to_save)
+            except anvil.server.AppOfflineError:
+                self.offlineSave(to_save)
+                """
+                self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
+                self.trips_td_str = "\n".join(self.trips_td_list)
+                self.text_area_1.text = self.trips_td_str
+                """
+            else:
+                del local_storage['unsaved']
+            finally:
+                self.update()
+                self.num_entry = ""
+                self.text_box_1.text = ""
 
 
+# Needs to be changed
 def delBtn(self, **event_args):
     if 'unsaved' in local_storage:
         local_storage['unsaved'].pop()
