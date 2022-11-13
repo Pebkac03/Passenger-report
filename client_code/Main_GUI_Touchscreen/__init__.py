@@ -10,78 +10,12 @@ import time
 
 
 class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
-    def offlineSave(self, to_add):
-        if 'trips' in local_storage:
-            local_storage['trips'].append(to_add)
-        else:
-            local_storage['trips'] = to_add
-        filtered = filter(lambda c: c['Date'] == dt.date.today(), local_storage['trips'])
-        local_storage['trips'] = filtered
-
-        if 'unsaved' in local_storage:
-            local_storage['unsaved'].append(to_add)
-        else:
-            local_storage['unsaved'] = to_add
-
-    def update(self, **event_args):
-        try:
-            self.trips_td_full = [
-                {
-                    'Time': r['Time'].isoformat(),
-                    'Direction': r['Direction'],
-                    'Passengers': str(r['Passengers']),
-                    'Date': r['Date'].isoformat()
-                }
-                for r in app_tables.table_1.search(tables.order_by("Time", ascending=False),
-                                                   Date=dt.date.today())
-            ]
-        except anvil.server.AppOfflineError:
-            self.trips_td_full = local_storage['trips']
-        else:
-            local_storage['trips'] = self.trips_td_full
-        finally:
-            self.trips_td = []
-            print(self.trips_td_full)
-            for n, value in enumerate(self.trips_td_full):
-                self.trips_td.append({"Time": dt.datetime.fromisoformat(value['Time']).strftime("%H:%M"),
-                                      "Direction": value['Direction'], "Passengers": value['Passengers']})
-            print(type(self.trips_td))
-            print(self.trips_td)
-            self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-            self.trips_td_str = "\n".join(self.trips_td_list)
-            self.text_area_1.text = self.trips_td_str
 
     def __init__(self, **properties):
         # Set Form properties and Data Bindings.
         self.init_components(**properties)
 
         # Any code you write here will run before the form opens.
-        if 'unsaved' in local_storage:
-            print(local_storage['unsaved'])
-
-        if 'unsaved' in local_storage:
-            try:
-                anvil.server.call_s('save', local_storage['unsaved'])
-            except anvil.server.AppOfflineError:  # turn this to calling update()
-                self.trips_td = [
-                    {
-                        'Time': r['Time'].fromisoformat().strftime("%H:%M"),
-                        'Direction': r['Direction'],
-                        'Passengers': str(r['Passengers'])
-                    }
-                    for r in local_storage['unsaved']
-                ]
-                self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
-                self.trips_td_list.reverse()
-                self.trips_td_str = "\n".join(self.trips_td_list)
-        else:
-            try:
-                self.update()
-            except anvil.server.AppOfflineError:
-                self.trips_td_str = ""
-            else:
-                self.first_onlinecall_made = True
-
         ##Tags
         self.button_1.tag = "1"
         self.button_2.tag = "2"
@@ -99,7 +33,68 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
         self.label_1.text = "Passagerare " + dt.datetime.now().strftime("%d/%m")
         self.text_area_1.text = self.trips_td_str
 
-        self.sim_offline = False
+        self.trips_td_full = list()
+        self.trips_td = list()
+        self.trips_td_list = list()
+        self.trips_td_str = str()
+
+        if 'unsaved' in local_storage:
+            try:
+                anvil.server.call_s('save', local_storage['unsaved'])
+            except:
+                pass
+            finally:
+                self.update()
+
+    # Called in case client can't save to server
+    def offlineSave(self, to_add):
+        # saves to local_storage['trips'] in same format as to server.
+        if 'trips' in local_storage:
+            local_storage['trips'].append(to_add)
+        else:
+            local_storage['trips'] = to_add
+        # filters local_storage['trips'] to only trips from the current day
+        filtered = filter(lambda c: c['Date'] == dt.date.today(), local_storage['trips'])
+        local_storage['trips'] = filtered
+
+        # Caches unsaved entries in local_storage['unsaved']
+        if 'unsaved' in local_storage:
+            local_storage['unsaved'].append(to_add)
+        else:
+            local_storage['unsaved'] = to_add
+
+    # Updates client display and local storage
+    def update(self, **event_args):
+        # fetches all trips from current day from server
+        try:
+            self.trips_td_full = [
+                {
+                    'Time': r['Time'].isoformat(),
+                    'Direction': r['Direction'],
+                    'Passengers': str(r['Passengers']),
+                    'Date': r['Date'].isoformat()
+                }
+                for r in app_tables.table_1.search(tables.order_by("Time", ascending=False),
+                                                   Date=dt.date.today())
+            ]
+
+        # falls back to fetching from local_storage['trips'] instead of server
+        except anvil.server.AppOfflineError:
+            self.trips_td_full = local_storage['trips']
+
+        # updates local_storage['trips'] to mirror server
+        else:
+            local_storage['trips'] = self.trips_td_full
+
+        # parses trips to string in display-format and updates display
+        finally:
+            self.trips_td = []
+            for n, value in enumerate(self.trips_td_full):
+                self.trips_td.append({"Time": dt.datetime.fromisoformat(value['Time']).strftime("%H:%M"),
+                                      "Direction": value['Direction'], "Passengers": value['Passengers']})
+            self.trips_td_list = [" ".join(d.values()) for d in self.trips_td]
+            self.trips_td_str = "\n".join(self.trips_td_list)
+            self.text_area_1.text = self.trips_td_str
 
     def numBtn(self, **event_args):
         self.text_box_1.text += event_args['sender'].tag
@@ -118,11 +113,6 @@ class Main_GUI_Touchscreen(Main_GUI_TouchscreenTemplate):
                 anvil.server.call_s('save', to_save)
             except anvil.server.AppOfflineError:
                 self.offlineSave(to_save)
-                """
-                self.trips_td_list.insert(0, now.strftime("%H:%M") + " " + event_args['sender'].tag + " " + self.num_entry)
-                self.trips_td_str = "\n".join(self.trips_td_list)
-                self.text_area_1.text = self.trips_td_str
-                """
             else:
                 del local_storage['unsaved']
             finally:
